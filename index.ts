@@ -7,7 +7,7 @@ async function main() {
     let res = '';
     const xcworkspace = core.getInput('xcworkspace');
     const schemes = JSON.parse(core.getInput('schemes')) as string[];
-    const manifestPlistBundleIds = JSON.parse(core.getInput('manifestPlistBundleId')) as string[];
+    const manifestPlistBundleIds = JSON.parse(core.getInput('manifestPlistBundleIds')) as string[];
     const manifestPlistImageUrl = core.getInput('manifestPlistImageUrl');
     const manifestPlistIpaUrl = core.getInput('manifestPlistIpaUrl');
     const manifestPlistTitle = core.getInput('manifestPlistTitle');

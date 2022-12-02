@@ -44,7 +44,7 @@ function main() {
             let res = '';
             const xcworkspace = core.getInput('xcworkspace');
             const schemes = JSON.parse(core.getInput('schemes'));
-            const manifestPlistBundleIds = JSON.parse(core.getInput('manifestPlistBundleId'));
+            const manifestPlistBundleIds = JSON.parse(core.getInput('manifestPlistBundleIds'));
             const manifestPlistImageUrl = core.getInput('manifestPlistImageUrl');
             const manifestPlistIpaUrl = core.getInput('manifestPlistIpaUrl');
             const manifestPlistTitle = core.getInput('manifestPlistTitle');
