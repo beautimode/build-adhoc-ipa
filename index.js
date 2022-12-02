@@ -70,7 +70,7 @@ function main() {
                     replace('manifestPlistIpaUrl', `${manifestPlistIpaUrl}/${manifestPlistBundleVersion}/${s}.ipa`);
                 fs_1.default.writeFileSync(`${manifestPlistBundleVersion}/${s}-manifest.plist`, manifestPlist);
                 console.log(`${s}: run Ad Hoc IPA export...`);
-                yield spawnAsync(`xcodebuild -parallelizeTargets -exportArchive -archivePath ${manifestPlistBundleVersion}/${s}.xcarchive -exportOptionsPlist ExportOptions.plist -exportPath ${s} -allowProvisioningUpdates`);
+                yield spawnAsync(`xcodebuild -parallelizeTargets -exportArchive -archivePath ${manifestPlistBundleVersion}/${s}.xcarchive -exportOptionsPlist ExportOptions.plist -exportPath ${manifestPlistBundleVersion} -allowProvisioningUpdates`);
                 console.log(`${s}: exported successfully!`);
             }
         }
@@ -85,19 +85,17 @@ function spawnAsync(cmdLine) {
         const [cmd, ...args] = cmdLine.split(/\s+/);
         const sp = (0, child_process_1.spawn)(cmd, args);
         sp.on('message', console.log);
-        let data = '';
         sp.stdout.on('data', chunk => {
-            data += chunk.toString();
+            console.log(chunk.toString());
         });
-        let errData = '';
         sp.stderr.on('data', chunk => {
-            errData += chunk.toString();
+            console.error(chunk.toString());
         });
         sp.on('close', code => {
             if ((code || 0) > 0) {
-                return reject(new Error(`${cmdLine} error:\n${errData}`));
+                return reject(new Error(`${cmdLine} failed!`));
             }
-            resolve(data);
+            resolve();
         });
         sp.on('error', err => {
             reject(err);
