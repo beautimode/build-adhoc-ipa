@@ -37,9 +37,9 @@ try {
     const manifestPlistTitle = core.getInput('manifestPlistTitle');
     const manifestPlistBundleId = core.getInput('manifestPlistBundleId');
     const manifestPlistBundleVersion = core.getInput('manifestPlistBundleVersion');
-    const manifestPlistTemplate = fs_1.default.readFileSync('manifest.plist').toString();
+    const manifestPlistTemplate = fs_1.default.readFileSync(__dirname + '/manifest.plist').toString();
     const exportOptionsPlistTeamId = core.getInput('exportOptionsPlistTeamId');
-    const exportOptionsPlistTemplate = fs_1.default.readFileSync('ExportOptions.plist').toString();
+    const exportOptionsPlistTemplate = fs_1.default.readFileSync(__dirname + '/ExportOptions.plist').toString();
     const exportOptionsPlist = exportOptionsPlistTemplate.replace('exportOptionsPlistTeamId', exportOptionsPlistTeamId);
     fs_1.default.writeFileSync(`ExportOptions.plist`, exportOptionsPlist);
     (0, child_process_1.execSync)(`mkdir -p ${manifestPlistBundleVersion}`);

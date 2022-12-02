@@ -10,10 +10,10 @@ try {
   const manifestPlistTitle = core.getInput('manifestPlistTitle');
   const manifestPlistBundleId = core.getInput('manifestPlistBundleId');
   const manifestPlistBundleVersion = core.getInput('manifestPlistBundleVersion');
-  const manifestPlistTemplate = fs.readFileSync('manifest.plist').toString();
+  const manifestPlistTemplate = fs.readFileSync(__dirname + '/manifest.plist').toString();
 
   const exportOptionsPlistTeamId = core.getInput('exportOptionsPlistTeamId');
-  const exportOptionsPlistTemplate = fs.readFileSync('ExportOptions.plist').toString();
+  const exportOptionsPlistTemplate = fs.readFileSync(__dirname +'/ExportOptions.plist').toString();
 
   const exportOptionsPlist = exportOptionsPlistTemplate.replace('exportOptionsPlistTeamId', exportOptionsPlistTeamId);
   fs.writeFileSync(`ExportOptions.plist`, exportOptionsPlist);
