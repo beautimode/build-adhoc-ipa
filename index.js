@@ -59,7 +59,7 @@ function main() {
             for (let i = 0; i < schemes.length; i++) {
                 const s = schemes[i];
                 console.log(`${s}: run archiving...`);
-                yield spawnAsync(`xcodebuild -workspace ${xcworkspace} -scheme ${s} -configuration Release -sdk iphoneos -archivePath ${manifestPlistBundleVersion}/${s}.xcarchive -parallelizeTargets archive`);
+                yield spawnAsync(`xcodebuild -workspace ${xcworkspace} -scheme ${s} -sdk iphoneos -archivePath ${manifestPlistBundleVersion}/${s}.xcarchive -parallelizeTargets archive`);
                 const manifestPlist = manifestPlistTemplate.
                     replace('manifestPlistTitle', manifestPlistTitle).
                     replace('manifestPlistBundleId', manifestPlistBundleId).
