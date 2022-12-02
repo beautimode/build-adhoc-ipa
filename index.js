@@ -44,10 +44,10 @@ function main() {
             let res = '';
             const xcworkspace = core.getInput('xcworkspace');
             const schemes = JSON.parse(core.getInput('schemes'));
+            const manifestPlistBundleIds = JSON.parse(core.getInput('manifestPlistBundleId'));
             const manifestPlistImageUrl = core.getInput('manifestPlistImageUrl');
             const manifestPlistIpaUrl = core.getInput('manifestPlistIpaUrl');
             const manifestPlistTitle = core.getInput('manifestPlistTitle');
-            const manifestPlistBundleId = core.getInput('manifestPlistBundleId');
             const manifestPlistBundleVersion = core.getInput('manifestPlistBundleVersion');
             const manifestPlistTemplate = fs_1.default.readFileSync(__dirname + '/manifest.plist').toString();
             const exportOptionsPlistTeamId = core.getInput('exportOptionsPlistTeamId');
@@ -58,11 +58,12 @@ function main() {
             console.log(res);
             for (let i = 0; i < schemes.length; i++) {
                 const s = schemes[i];
+                const appId = manifestPlistBundleIds[i];
                 console.log(`${s}: run archiving...`);
                 yield spawnAsync(`xcodebuild -workspace ${xcworkspace} -scheme ${s} -sdk iphoneos -archivePath ${manifestPlistBundleVersion}/${s}.xcarchive -parallelizeTargets archive`);
                 const manifestPlist = manifestPlistTemplate.
                     replace('manifestPlistTitle', manifestPlistTitle).
-                    replace('manifestPlistBundleId', manifestPlistBundleId).
+                    replace('manifestPlistBundleId', appId).
                     replace('manifestPlistBundleVersion', manifestPlistBundleVersion).
                     replace('manifestPlistImageUrl', manifestPlistImageUrl).
                     replace('manifestPlistTitle', manifestPlistTitle).

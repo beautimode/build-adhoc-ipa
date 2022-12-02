@@ -9,6 +9,10 @@ inputs:
     description: 'Schemes to build. (json)'
     required: true
     default: '["scheme1", "scheme2"]'
+  manifestPlistBundleIds:
+    description: 'manifest.plist app bundle ID. (json)'
+    required: true
+    default: '["com.foo.app1", "com.foo.app2"]'
   manifestPlistImageUrl:
     description: 'manifest.plist app image URL'
     required: true
@@ -17,10 +21,6 @@ inputs:
     description: 'manifest.plist app IPA base URL'
     required: true
     default: 'https://foo.com/ipa'
-  manifestPlistBundleId:
-    description: 'manifest.plist app bundle ID'
-    required: true
-    default: 'com.foo.app'
   manifestPlistBundleVersion:
     description: 'manifest.plist app version'
     required: true
