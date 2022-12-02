@@ -1,4 +1,4 @@
-import core from '@actions/core';
+import * as core from '@actions/core';
 import { execSync } from 'child_process';
 import fs from 'fs';
 
