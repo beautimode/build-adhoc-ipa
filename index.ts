@@ -21,7 +21,7 @@ try {
   execSync(`mkdir -p ${manifestPlistBundleVersion}`);
   schemes.forEach((s) => {
     console.log(`${s}: run archiving...`);
-    execSync(`xcodebuild -workspace ${xcworkspace} -scheme ${s} -configuration Debug -sdk iphoneos -archivePath ${manifestPlistBundleVersion}/${s}.xcarchive -parallelizeTargets archive`);
+    execSync(`xcodebuild -workspace ${xcworkspace} -scheme ${s} -configuration Debug -sdk iphoneos -archivePath ${manifestPlistBundleVersion}/${s}.xcarchive -parallelizeTargets archive`, { stdio: 'ignore' });
 
     const manifestPlist = manifestPlistTemplate.
     replace('manifestPlistTitle', manifestPlistTitle).
@@ -33,7 +33,7 @@ try {
     fs.writeFileSync(`${manifestPlistBundleVersion}/${s}-manifest.plist`, manifestPlist);
 
     console.log(`${s}: run Ad Hoc IPA export...`);
-    execSync(`xcodebuild -parallelizeTargets -exportArchive -archivePath ${manifestPlistBundleVersion}/${s}.xcarchive -exportOptionsPlist ExportOptions.plist -exportPath ${s} -allowProvisioningUpdates`);
+    execSync(`xcodebuild -parallelizeTargets -exportArchive -archivePath ${manifestPlistBundleVersion}/${s}.xcarchive -exportOptionsPlist ExportOptions.plist -exportPath ${s} -allowProvisioningUpdates`, { stdio: 'ignore' });
 
     console.log(`${s}: exported successfully!`);
   });
