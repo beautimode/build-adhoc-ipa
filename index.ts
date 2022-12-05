@@ -29,7 +29,7 @@ async function main() {
       const appId = manifestPlistBundleIds[i];
 
       console.log(`${s}: run archiving...`);
-      await spawnAsync(`xcodebuild -workspace ${xcworkspace} -scheme ${s} -sdk iphoneos -archivePath ${manifestPlistBundleVersion}/${s}.xcarchive -parallelizeTargets archive`, showInfo);
+      await spawnAsync(`xcodebuild -workspace ${xcworkspace} -scheme ${s} -sdk iphoneos -archivePath ${manifestPlistBundleVersion}/${s}.xcarchive -parallelizeTargets archive`, !showInfo);
 
       const manifestPlist = manifestPlistTemplate.
         replace('manifestPlistTitle', manifestPlistTitle).
@@ -41,7 +41,7 @@ async function main() {
       fs.writeFileSync(`${manifestPlistBundleVersion}/${s}-manifest.plist`, manifestPlist);
 
       console.log(`${s}: run Ad Hoc IPA export...`);
-      await spawnAsync(`xcodebuild -parallelizeTargets -exportArchive -archivePath ${manifestPlistBundleVersion}/${s}.xcarchive -exportOptionsPlist ExportOptions.plist -exportPath ${manifestPlistBundleVersion} -allowProvisioningUpdates`, showInfo);
+      await spawnAsync(`xcodebuild -parallelizeTargets -exportArchive -archivePath ${manifestPlistBundleVersion}/${s}.xcarchive -exportOptionsPlist ExportOptions.plist -exportPath ${manifestPlistBundleVersion} -allowProvisioningUpdates`, !showInfo);
 
       console.log(`${s}: exported successfully!`);
     }

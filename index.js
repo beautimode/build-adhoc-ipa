@@ -62,7 +62,7 @@ function main() {
                 const s = schemes[i];
                 const appId = manifestPlistBundleIds[i];
                 console.log(`${s}: run archiving...`);
-                yield spawnAsync(`xcodebuild -workspace ${xcworkspace} -scheme ${s} -sdk iphoneos -archivePath ${manifestPlistBundleVersion}/${s}.xcarchive -parallelizeTargets archive`, showInfo);
+                yield spawnAsync(`xcodebuild -workspace ${xcworkspace} -scheme ${s} -sdk iphoneos -archivePath ${manifestPlistBundleVersion}/${s}.xcarchive -parallelizeTargets archive`, !showInfo);
                 const manifestPlist = manifestPlistTemplate.
                     replace('manifestPlistTitle', manifestPlistTitle).
                     replace('manifestPlistBundleId', appId).
@@ -72,7 +72,7 @@ function main() {
                     replace('manifestPlistIpaUrl', `${manifestPlistIpaUrl}/${manifestPlistBundleVersion}/${s}.ipa`);
                 fs_1.default.writeFileSync(`${manifestPlistBundleVersion}/${s}-manifest.plist`, manifestPlist);
                 console.log(`${s}: run Ad Hoc IPA export...`);
-                yield spawnAsync(`xcodebuild -parallelizeTargets -exportArchive -archivePath ${manifestPlistBundleVersion}/${s}.xcarchive -exportOptionsPlist ExportOptions.plist -exportPath ${manifestPlistBundleVersion} -allowProvisioningUpdates`, showInfo);
+                yield spawnAsync(`xcodebuild -parallelizeTargets -exportArchive -archivePath ${manifestPlistBundleVersion}/${s}.xcarchive -exportOptionsPlist ExportOptions.plist -exportPath ${manifestPlistBundleVersion} -allowProvisioningUpdates`, !showInfo);
                 console.log(`${s}: exported successfully!`);
             }
         }
