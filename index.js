@@ -42,6 +42,8 @@ function main() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             let res = '';
+            const debugLevel = core.getInput('debugLevel');
+            const showInfo = debugLevel == 'info';
             const xcworkspace = core.getInput('xcworkspace');
             const schemes = JSON.parse(core.getInput('schemes'));
             const manifestPlistBundleIds = JSON.parse(core.getInput('manifestPlistBundleIds'));
@@ -60,7 +62,7 @@ function main() {
                 const s = schemes[i];
                 const appId = manifestPlistBundleIds[i];
                 console.log(`${s}: run archiving...`);
-                yield spawnAsync(`xcodebuild -workspace ${xcworkspace} -scheme ${s} -sdk iphoneos -archivePath ${manifestPlistBundleVersion}/${s}.xcarchive -parallelizeTargets archive`);
+                yield spawnAsync(`xcodebuild -workspace ${xcworkspace} -scheme ${s} -sdk iphoneos -archivePath ${manifestPlistBundleVersion}/${s}.xcarchive -parallelizeTargets archive`, showInfo);
                 const manifestPlist = manifestPlistTemplate.
                     replace('manifestPlistTitle', manifestPlistTitle).
                     replace('manifestPlistBundleId', appId).
@@ -70,7 +72,7 @@ function main() {
                     replace('manifestPlistIpaUrl', `${manifestPlistIpaUrl}/${manifestPlistBundleVersion}/${s}.ipa`);
                 fs_1.default.writeFileSync(`${manifestPlistBundleVersion}/${s}-manifest.plist`, manifestPlist);
                 console.log(`${s}: run Ad Hoc IPA export...`);
-                yield spawnAsync(`xcodebuild -parallelizeTargets -exportArchive -archivePath ${manifestPlistBundleVersion}/${s}.xcarchive -exportOptionsPlist ExportOptions.plist -exportPath ${manifestPlistBundleVersion} -allowProvisioningUpdates`);
+                yield spawnAsync(`xcodebuild -parallelizeTargets -exportArchive -archivePath ${manifestPlistBundleVersion}/${s}.xcarchive -exportOptionsPlist ExportOptions.plist -exportPath ${manifestPlistBundleVersion} -allowProvisioningUpdates`, showInfo);
                 console.log(`${s}: exported successfully!`);
             }
         }
@@ -80,13 +82,13 @@ function main() {
         process.exit(0);
     });
 }
-function spawnAsync(cmdLine) {
+function spawnAsync(cmdLine, log) {
     return new Promise((resolve, reject) => {
         const [cmd, ...args] = cmdLine.split(/\s+/);
         const sp = (0, child_process_1.spawn)(cmd, args);
-        sp.on('message', console.log);
+        log && sp.on('message', console.log);
         sp.stdout.on('data', chunk => {
-            console.log(chunk.toString());
+            log && console.log(chunk.toString());
         });
         sp.stderr.on('data', chunk => {
             console.error(chunk.toString());

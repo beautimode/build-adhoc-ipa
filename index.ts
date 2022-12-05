@@ -5,6 +5,8 @@ import fs from 'fs';
 async function main() {
   try {
     let res = '';
+    const debugLevel = core.getInput('debugLevel');
+    const showInfo = debugLevel == 'info';
     const xcworkspace = core.getInput('xcworkspace');
     const schemes = JSON.parse(core.getInput('schemes')) as string[];
     const manifestPlistBundleIds = JSON.parse(core.getInput('manifestPlistBundleIds')) as string[];
@@ -27,7 +29,7 @@ async function main() {
       const appId = manifestPlistBundleIds[i];
 
       console.log(`${s}: run archiving...`);
-      await spawnAsync(`xcodebuild -workspace ${xcworkspace} -scheme ${s} -sdk iphoneos -archivePath ${manifestPlistBundleVersion}/${s}.xcarchive -parallelizeTargets archive`);
+      await spawnAsync(`xcodebuild -workspace ${xcworkspace} -scheme ${s} -sdk iphoneos -archivePath ${manifestPlistBundleVersion}/${s}.xcarchive -parallelizeTargets archive`, showInfo);
 
       const manifestPlist = manifestPlistTemplate.
         replace('manifestPlistTitle', manifestPlistTitle).
@@ -39,7 +41,7 @@ async function main() {
       fs.writeFileSync(`${manifestPlistBundleVersion}/${s}-manifest.plist`, manifestPlist);
 
       console.log(`${s}: run Ad Hoc IPA export...`);
-      await spawnAsync(`xcodebuild -parallelizeTargets -exportArchive -archivePath ${manifestPlistBundleVersion}/${s}.xcarchive -exportOptionsPlist ExportOptions.plist -exportPath ${manifestPlistBundleVersion} -allowProvisioningUpdates`);
+      await spawnAsync(`xcodebuild -parallelizeTargets -exportArchive -archivePath ${manifestPlistBundleVersion}/${s}.xcarchive -exportOptionsPlist ExportOptions.plist -exportPath ${manifestPlistBundleVersion} -allowProvisioningUpdates`, showInfo);
 
       console.log(`${s}: exported successfully!`);
     }
@@ -49,15 +51,15 @@ async function main() {
   process.exit(0);
 }
 
-function spawnAsync(cmdLine: String) {
+function spawnAsync(cmdLine: String, log: boolean) {
   return new Promise<void>((resolve, reject) => {
     const [cmd, ...args] = cmdLine.split(/\s+/);
     const sp = spawn(cmd, args);
 
-    sp.on('message', console.log);
+    log && sp.on('message', console.log);
 
     sp.stdout.on('data', chunk => {
-      console.log(chunk.toString());
+      log && console.log(chunk.toString());
     });
 
     sp.stderr.on('data', chunk => {

@@ -32,9 +32,11 @@ inputs:
   exportOptionsPlistTeamId:
     description: 'ExportOptions.plist Team ID'
     required: true
-outputs:
-  time: # id of output
-    description: 'The time we greeted you'
+  debugLevel:
+    description: 'Level of debug messages'
+    required: false
+    default: 'info'
+    
 runs:
   using: 'node16'
   main: 'index.js'
