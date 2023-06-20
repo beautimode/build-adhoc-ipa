@@ -29,7 +29,7 @@ async function main() {
       const appId = manifestPlistBundleIds[i];
 
       console.log(`${s}: run archiving...`);
-      await spawnAsync(`xcodebuild -workspace ${xcworkspace} -scheme ${s} -sdk iphoneos -archivePath ${manifestPlistBundleVersion}/${s}.xcarchive -parallelizeTargets archive`, !showInfo);
+      await spawnAsync(`xcodebuild -workspace ${xcworkspace} -scheme ${s} -sdk iphoneos -archivePath ${manifestPlistBundleVersion}/${s}.xcarchive -parallelizeTargets archive -allowProvisioningUpdates`, !showInfo);
 
       const manifestPlist = manifestPlistTemplate.
         replace('manifestPlistTitle', manifestPlistTitle).
