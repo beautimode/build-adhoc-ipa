@@ -1,0 +1,42 @@
+name: 'Hello World'
+description: 'Greet someone and record the time'
+inputs:
+  xcworkspace:
+    description: 'Xcode workspace file'
+    required: true
+    default: 'foo.xcworkspace'
+  schemes:
+    description: 'Schemes to build. (json)'
+    required: true
+    default: '["scheme1", "scheme2"]'
+  manifestPlistBundleIds:
+    description: 'manifest.plist app bundle ID. (json)'
+    required: true
+    default: '["com.foo.app1", "com.foo.app2"]'
+  manifestPlistImageUrl:
+    description: 'manifest.plist app image URL'
+    required: true
+    default: 'https://foo.com/image.png'
+  manifestPlistIpaUrl:
+    description: 'manifest.plist app IPA base URL'
+    required: true
+    default: 'https://foo.com/ipa'
+  manifestPlistBundleVersion:
+    description: 'manifest.plist app version'
+    required: true
+    default: 'v1.0.0'
+  manifestPlistTitle:
+    description: 'manifest.plist title'
+    required: true
+    default: 'Update app'
+  exportOptionsPlistTeamId:
+    description: 'ExportOptions.plist Team ID'
+    required: true
+  debugLevel:
+    description: 'Level of debug messages'
+    required: false
+    default: 'info'
+    
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
