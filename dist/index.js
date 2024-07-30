@@ -2745,6 +2745,8 @@ function main() {
             const manifestPlistIpaUrl = core.getInput('manifestPlistIpaUrl');
             const manifestPlistTitle = core.getInput('manifestPlistTitle');
             const manifestPlistBundleVersion = core.getInput('manifestPlistBundleVersion');
+            const APPSTORE_ISSUER_ID = core.getInput('APPSTORE_ISSUER_ID');
+            const APPSTORE_API_KEY_ID = core.getInput('APPSTORE_API_KEY_ID');
             const manifestPlistTemplate = fs_1.default.readFileSync(__nccwpck_require__.ab + "manifest.plist").toString();
             const exportOptionsPlistTeamId = core.getInput('exportOptionsPlistTeamId');
             const exportOptionsPlistTemplate = fs_1.default.readFileSync(__nccwpck_require__.ab + "ExportOptions.plist").toString();
@@ -2756,7 +2758,7 @@ function main() {
                 const s = schemes[i];
                 const appId = manifestPlistBundleIds[i];
                 console.log(`${s}: run archiving...`);
-                yield spawnAsync(`xcodebuild -workspace ${xcworkspace} -scheme ${s} -sdk iphoneos -archivePath ${manifestPlistBundleVersion}/${s}.xcarchive -parallelizeTargets archive -allowProvisioningUpdates`, !showInfo);
+                yield spawnAsync(`xcodebuild -workspace ${xcworkspace} -scheme ${s} -sdk iphoneos -archivePath ${manifestPlistBundleVersion}/${s}.xcarchive -parallelizeTargets archive -allowProvisioningUpdates -authenticationKeyIssuerID ${APPSTORE_ISSUER_ID} -authenticationKeyID ${APPSTORE_API_KEY_ID} -authenticationKeyPath ~/AuthKey_${APPSTORE_API_KEY_ID}.p8`, !showInfo);
                 const manifestPlist = manifestPlistTemplate.
                     replace('manifestPlistTitle', manifestPlistTitle).
                     replace('manifestPlistBundleId', appId).

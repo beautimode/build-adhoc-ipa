@@ -32,6 +32,12 @@ inputs:
   exportOptionsPlistTeamId:
     description: 'ExportOptions.plist Team ID'
     required: true
+  APPSTORE_ISSUER_ID:
+    description: 'App Store Connect API Issuser ID'
+    required: true
+  APPSTORE_API_KEY_ID:
+    description: 'App Store Connect API Key ID'
+    required: true
   debugLevel:
     description: 'Level of debug messages'
     required: false
